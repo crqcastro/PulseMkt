@@ -1,2 +1,2 @@
 # PulseMkt
-example of webservice rest that implements a shopping cart
+Example of webservice rest that implements a shopping cart
