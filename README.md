@@ -1,11 +1,9 @@
 # PulseMkt
-## Overview
-Example of webservice rest that implements a shopping cart
-
 [![build-status-image]][home] 
 [![lang-java]][home] 
 [![version]][home]
-
+## Overview
+Example of webservice rest that implements a shopping cart
 
 ## Instalation
 
@@ -49,7 +47,9 @@ Just deploy the file to the application server.
 [![mysql]][mysql-url]
 ### Database Configuration
 Follow the steps to make the necessary settings
-
+```
+database-script/pulsemkt.sql
+```
 #### Step 1
 Run the database application script 
 ```
@@ -61,7 +61,14 @@ Create user in MySQL database and specify in the configuration file DBConfig.pro
 db.user=pulsemkt
 db.password=pulsemkt
 ```
-## Resources
+### Step3
+insert database connection string information, including host and port
+```
+db.url=jdbc:mysql://localhost:3306/pulsemkt?autoReconnect=true&useSSL=false&useTimezone=true&serverTimezone=UTC
+```
+
+
+## Usage
 
 
 
