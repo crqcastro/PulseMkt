@@ -49,6 +49,7 @@ Just deploy the file to the application server.
 [![mysql]][mysql-url]
 ### Database Configuration
 Follow the steps to make the necessary settings
+
 #### Step 1
 Run the database application script 
 ```
