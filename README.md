@@ -9,12 +9,12 @@ Example of webservice rest that implements a shopping cart
 
 ## Instalation
 
-<img src="https://raw.githubusercontent.com/crqcastro/svg/master/github.svg" width="36"/>
+![test](https://github.com/favicon.ico | width=36)
 ### Git
 Fork the project to your own repository
 [!* Fork it `https://github.com/crqcastro/PulseMkt/fork`][git-fork-help]
 
-<img src="https://raw.githubusercontent.com/crqcastro/svg/master/apachemaven.svg" width="36"/>
+
 ### Maven
 Use maven to manage dependencies and build the project
 * Maven Package Goal
@@ -45,7 +45,6 @@ $ mvn clean verify
 Inside the target folder will be pulsemkt.war.
 Just deploy the file to the application server.
 
-<img src="https://raw.githubusercontent.com/crqcastro/svg/master/mysql.svg" width="36">
 ### Database Configuration
 Follow the steps to make the necessary settings
 #### Step 1
@@ -72,4 +71,5 @@ db.password=pulsemkt
 [git-fork-help]:https://docs.github.com/en/github/getting-started-with-github/fork-a-repo
 [mysql]:https://raw.githubusercontent.com/crqcastro/svg/master/mysql.svg
 [github]:https://raw.githubusercontent.com/crqcastro/svg/master/github.svg
+[github-url]:https://github.com
 [maven]:https://raw.githubusercontent.com/crqcastro/svg/master/apachemaven.svg
