@@ -9,7 +9,7 @@ Example of webservice rest that implements a shopping cart
 
 ## Instalation
 
-![test](https://github.com/favicon.ico | width=36)
+[![github]][github-url]
 ### Git
 Fork the project to your own repository
 [!* Fork it `https://github.com/crqcastro/PulseMkt/fork`][git-fork-help]
