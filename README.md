@@ -4,7 +4,7 @@
 [![version]][home]
 ## Overview
 Example of webservice rest that implements a shopping cart
-
+[create an anchor](#anchors-in-markdown)
 ## Usage
 
 ### Logon
@@ -525,7 +525,7 @@ Response response = client.newCall(request).execute();
 ```
 
 [![php]][php-url]
-
+(#anchors-in-markdown)
 ###### PHP
 ```php
 <?php
@@ -1016,10 +1016,6 @@ $response = $client->getResponse();
 echo $response->getBody();
 ```
 
-\
-\
-\
-\
 
 ## Instalation Guide
 
