@@ -8,12 +8,23 @@ Example of webservice rest that implements a shopping cart
 ## Resources Table
 Verb | Resource | ADMIN
 -----|----------|-------
-POST | /user | -[ ]
-POST | /login | [ ]
-POST | /cart | [ ]
-GET | /products | [ ]
-PUT | /cart/{Integer:cartid}/product/{Integer:productid}/{Double:quantity} | [ ]
-DELETE | /cart/{Integer:cartid}/product/{Integer:productid}/{Double:quantity} | [ ]
+POST | /user | N
+POST | /login | N
+POST | /cart | N
+GET | /cart/{Integer:cartid} | N
+GET | /products | N
+PUT | /cart/{Integer:cartid}/product/{Integer:productid}/{Double:quantity} | N
+DELETE | /cart/{Integer:cartid}/product/{Integer:productid}/{Double:quantity} | N
+GET | /paymentmethod | N
+PUT | /cart/{Integer:cartid}/payment/{Integer:ppaymentid}/{Double:amount} | N
+DELETE | /cart/{Integer:cartid}/payment/{Integer:paymentid}/{Double:amount} | N
+GET | /delivery/types | N
+PUT | /cart/{Integer:cartid}/delivery/{Integer:deliveryid} | N
+GET | /stores | N
+POST | /cart/checkout | N
+GET | /orders/{Integer:orderid} | N
+GET | /oredrs | S
+
 
 
 
