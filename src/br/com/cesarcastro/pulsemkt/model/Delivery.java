@@ -1,5 +1,7 @@
 package br.com.cesarcastro.pulsemkt.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 
 public class Delivery {
@@ -7,13 +9,13 @@ public class Delivery {
 	@Expose
 	private Integer id;
 	@Expose
-	private Integer type;
+	private Type type;
 	@Expose
 	private String description;
 	@Expose
 	private Address address;
 
-	public Delivery(Integer id, Integer type, String description, Address address) {
+	public Delivery(Integer id, Type type, String description, Address address) {
 		this.id = id;
 		this.type = type;
 		this.description = description;
@@ -32,11 +34,11 @@ public class Delivery {
 		this.id = id;
 	}
 
-	public Integer getType() {
+	public Type getType() {
 		return type;
 	}
 
-	public void setType(Integer type) {
+	public void setType(Type type) {
 		this.type = type;
 	}
 

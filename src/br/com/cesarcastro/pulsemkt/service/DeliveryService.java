@@ -60,4 +60,19 @@ public class DeliveryService {
 
 	}
 
+	public void getDeliveryTypeList(DeliveryType types)throws ServiceBusinessException {
+		try {
+			dao.getDeliveryTypeList(types);
+		} catch (SQLException e) {
+			if (SysConfig.DB_EXCEPTIONS_2_HTTP_STATUS_CODES.containsKey(e.getClass().getCanonicalName())) {
+				throw new ServiceBusinessException(
+						SysConfig.DB_EXCEPTIONS_2_HTTP_STATUS_CODES.get(e.getClass().getCanonicalName()).toString(), e);
+			} else {
+				throw new ServiceBusinessException(Response.Status.INTERNAL_SERVER_ERROR.toString(), e);
+			}
+		} catch (Exception e) {
+			throw new ServiceBusinessException(Response.Status.INTERNAL_SERVER_ERROR.toString(), e);
+
+		}
+
 }

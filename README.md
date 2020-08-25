@@ -8,6 +8,7 @@ Example of webservice rest that implements a shopping cart
 ## Usage
 
 ### Logon
+To create a new user
 ##### POST:/user
 ###### Request
 * Content-Type: application/json
@@ -32,6 +33,8 @@ Example of webservice rest that implements a shopping cart
 * HTTP Status 201 - CREATED - When success
 * HTTP Status 400 - BAD REQUEST - When data for a mandatory field is missing
 
+[![curl]][curl-url]
+
 ###### CURL
 ```shell
 curl --request POST \
@@ -51,7 +54,9 @@ curl --request POST \
     }
 }'
 ```
-###### Java
+[![java]][java-url]
+
+###### JAVA
 ```java
 OkHttpClient client = new OkHttpClient();
 
@@ -65,6 +70,8 @@ Request request = new Request.Builder()
 
 Response response = client.newCall(request).execute();
 ```
+[![php]][php-url]
+
 ###### PHP
 ```php
 <?php
@@ -101,6 +108,7 @@ $response = $client->getResponse();
 echo $response->getBody();
 ```
 ### Login
+To authenticate a user
 ##### POST:/user
 ###### Request
 * Authorization: Basic Base64(your@email.com:password)
@@ -112,12 +120,16 @@ echo $response->getBody();
 	* Valid: 10 minutes
 * HTTP Status 200 - OK - When success
 
+[![curl]][curl-url]
+
 ###### CURL
 ```curl
 curl --request POST \
   --url http://localhost:8080/pulsemkt/login \
   --header 'authorization: Basic eW91ckBlbWFpbC5jb206MTIzNDU2'
 ```
+
+[![java]][java-url]
 
 ###### JAVA
 ```java
@@ -131,6 +143,8 @@ Request request = new Request.Builder()
 
 Response response = client.newCall(request).execute();
 ```
+
+[![php]][php-url]
 
 ###### PHP
 ```php
@@ -152,6 +166,7 @@ echo $response->getBody();
 ```
 
 ### Create Cart
+To start a new cart
 ##### POST:/cart
 ###### Request
 * Authorization: Last received valid token
@@ -162,12 +177,16 @@ echo $response->getBody();
 * HTTP Status 201 - CREATED - When success
 * HTTP Status 401 - UNAUTHORIZED - When token expires
 
+[![curl]][curl-url]
+
 ###### CURL
 ```curl
 curl --request POST \
   --url http://localhost:8080/pulsemkt/cart/ \
   --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNH0sInRpbWUiOnsiaG91ciI6MjIsIm1pbnV0ZSI6OSwic2Vjb25kIjo0LCJuYW5vIjo5NjAwMDAwMDB9fX0='
 ```
+
+[![java]][java-url]
 
 ###### JAVA
 ```java
@@ -181,6 +200,8 @@ Request request = new Request.Builder()
 
 Response response = client.newCall(request).execute();
 ```
+
+[![php]][php-url]
 
 ###### PHP
 ```php
@@ -202,6 +223,7 @@ echo $response->getBody();
 ```
 
 ### Product List
+For the list of available products
 ##### GET:/products
 * Query Parameters
 	* Offset: Used in pagination to limit the start of the query scope
@@ -231,12 +253,16 @@ echo $response->getBody();
 ]
 ```
 
+[![curl]][curl-url]
+
 ###### CURL
 ```curl
 curl --request GET \
   --url 'http://localhost:8080/pulsemkt/products/?offset=0&limit=20&barcode=7893321654&description=coke' \
   --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ=='
 ```
+
+[![java]][java-url]
 
 ###### JAVA
 ```java
@@ -250,6 +276,8 @@ Request request = new Request.Builder()
 
 Response response = client.newCall(request).execute();
 ```
+
+[![php]][php-url]
 
 ###### PHP
 ```php
@@ -278,6 +306,7 @@ echo $response->getBody();
 ```
 
 ### Add product to cart
+To add a product to the cart
 ##### PUT:/cart/{cartid}/product/{productid}
 * Cartid: Id returned at cart creation
 * Productid: Id de um produto válido. A lista de produtos pode ser obtida em *Listar Produtos*
@@ -291,12 +320,16 @@ echo $response->getBody();
 * HTTP Status 409 - CONFLICT - When the requisition user is not the same user who created the cart
 * HTTP Status 401 - UNAUTHORIZED - When token expires
 
+[![curl]][curl-url]
+
 ###### CURL
 ```curl
 curl --request PUT \
   --url http://localhost:8080/pulsemkt/cart/1/product/1 \
   --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
 ```
+
+[![java]][java-url]
 
 ###### JAVA
 ```java
@@ -310,6 +343,8 @@ Request request = new Request.Builder()
 
 Response response = client.newCall(request).execute();
 ```
+
+[![php]][php-url]
 
 ###### PHP
 ```php
@@ -330,12 +365,420 @@ $response = $client->getResponse();
 echo $response->getBody();
 ```
 
+### To remove product to cart
+To add a product to the cart
+##### DELETE:/cart/{cartid}/product/{productid}
+* Cartid: Id returned at cart creation
+* Productid: Valid product id. The product list can be obtained at *List Products*
+
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* HTTP Status 201 - ACCEPTED - When success
+* HTTP Status 409 - CONFLICT - When the requisition user is not the same user who created the cart
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### CURL
+```curl
+curl --request DELETE \
+  --url http://localhost:8080/pulsemkt/cart/1/product/1 \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/cart/1/product/1")
+  .delete(null)
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/product/1');
+$request->setRequestMethod('DELETE');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+### List payment methods
+For a list of available payment methods
+##### GET:/paymentmethod
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* HTTP Status 201 - ACCEPTED - When success
+* HTTP Status 409 - CONFLICT - When the requisition user is not the same user who created the cart
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### CURL
+```curl
+curl --request DELETE \
+  --url http://localhost:8080/pulsemkt/cart/1/product/1 \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/cart/1/product/1")
+  .delete(null)
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/product/1');
+$request->setRequestMethod('DELETE');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+### Add payment
+Add a payment method to the cart
+##### POST:/cart/{cartid}/payment/{paymentid}/{value}
+* Cartid: Id returned at cart creation
+* paymentid: Id of a valid payment method. The  payment methods list can be obtained at *List payment methods*
+* value: A double value to be paid with this payment method
+
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* HTTP Status 201 - ACCEPTED - When success
+* HTTP Status 409 - CONFLICT - When the requisition user is not the same user who created the cart
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### CURL
+```curl
+curl --request POST \
+  --url http://localhost:8080/pulsemkt/cart/1/payment/1/99.99 \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/cart/1/payment/1/99.99")
+  .post(null)
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/payment/1/99.99');
+$request->setRequestMethod('POST');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+### Delete payment
+Delete a payment method to the cart
+##### DELETE:/cart/{cartid}/payment/{paymentid}/{value}
+* Cartid: Id returned at cart creation
+* paymentid: Payment method id to be removed
+* value: A double value to be removed with this payment method
+
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* HTTP Status 201 - ACCEPTED - When success
+* HTTP Status 409 - CONFLICT - When the requisition user is not the same user who created the cart
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### CURL
+```curl
+curl --request DELETE
+  --url http://localhost:8080/pulsemkt/cart/1/payment/1/99.99 \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/cart/1/payment/1/99.99")
+  .delete()
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/payment/1/99.99');
+$request->setRequestMethod('DELETE');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+### Delivery methods types
+For types of delivery methods
+##### GET:/delivery/types
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* HTTP Status 20o - OK - When success
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### CURL
+```curl
+curl --request GET
+  --url http://localhost:8080/pulsemkt/delivery/types \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/delivery/types")
+  .delete()
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/delivery/types');
+$request->setRequestMethod('GET');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+################################
+listar lojas entra aqui
+################################
 
 
+### Add  or change delivery method
+Add or change delivery method in cart
+##### PUT:/cart/{cartid}/delivery/{deliveryid}
+###### Request
+* Authorization: Last received valid token
 
+###### Response
+* AUthorization: Generated token
+* HTTP Status 201 - ACCEPTED - When success
+* HTTP Status 409 - CONFLICT - When the requisition user is not the same user who created the cart
+* HTTP Status 401 - UNAUTHORIZED - When token expires
 
+[![curl]][curl-url]
 
+###### CURL
+```curl
+curl --request PUT
+  --url http://localhost:8080/pulsemkt/cart/1/delivery/1 \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
 
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/cart/1/delivery/1")
+  .put()
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/delivery/1');
+$request->setRequestMethod('PUT');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+### Checkout
+Checkout
+##### :POST/{cartid}/checkout
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* Location: Order resource location
+* HTTP Status 201 - ACCEPTED - When success
+* HTTP Status 409 - CONFLICT - When the requisition user is not the same user who created the cart
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### CURL
+```curl
+curl --request POST
+  --url http://localhost:8080/pulsemkt/cart/1/checkout \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/cart/1/checkout")
+  .post()
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/checkout');
+$request->setRequestMethod('POST');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
 
 
 
@@ -421,3 +864,9 @@ db.url=jdbc:mysql://localhost:3306/pulsemkt?autoReconnect=true&useSSL=false&useT
 [github-url]:https://github.com
 [maven]:https://raw.githubusercontent.com/crqcastro/svg/master/apachemaven.svg
 [maven-url]:https://maven.apache.org/
+[java]:https://raw.githubusercontent.com/crqcastro/svg/master/java.svg
+[java-url]:https://www.java.com/
+[php]:https://raw.githubusercontent.com/crqcastro/svg/master/php.svg
+[php-url]:https://www.php.net/
+[curl]:https://raw.githubusercontent.com/crqcastro/svg/master/curl.svg
+[curl-url]:https://curl.haxx.se/

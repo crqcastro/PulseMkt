@@ -24,6 +24,7 @@ import br.com.cesarcastro.pulsemkt.enums.UserRole;
 import br.com.cesarcastro.pulsemkt.exception.ServiceBusinessException;
 import br.com.cesarcastro.pulsemkt.model.Authorization;
 import br.com.cesarcastro.pulsemkt.model.Delivery;
+import br.com.cesarcastro.pulsemkt.model.DeliveryType;
 import br.com.cesarcastro.pulsemkt.service.DeliveryService;
 import br.com.cesarcastro.pulsemkt.util.AppUtils;
 
@@ -67,6 +68,30 @@ public class DeliveryEndPoint {
 		try {
 			Collection<Delivery> deliveries = new ArrayList<Delivery>();
 			service.getDeliveryList(deliveries, type, description, offset, limit);
+
+			response = Response.ok(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(deliveries));
+		} catch (ServiceBusinessException e) {
+			response = Response.status(Integer.parseInt(e.getMessage())).entity(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			response = Response.serverError();
+		}
+		return response
+				.header(HttpHeaders.AUTHORIZATION,
+						Authorization.toToken(Authorization.fromToken(req.getHeader(HttpHeaders.AUTHORIZATION))))
+				.build();
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("types")
+	public Response listDeliveryMethods(@Context HttpServletRequest req) {
+		
+		ResponseBuilder response = Response.ok();
+
+		try {
+			Collection<DeliveryType> types = new ArrayList<DeliveryType>();
+			service.getDeliveryTypeList(types);
 
 			response = Response.ok(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(deliveries));
 		} catch (ServiceBusinessException e) {

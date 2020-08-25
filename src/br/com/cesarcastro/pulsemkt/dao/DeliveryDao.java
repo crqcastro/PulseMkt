@@ -50,8 +50,9 @@ public class DeliveryDao {
 		StringBuilder sql = new StringBuilder(
 				"SELECT d.deliveryid, d.deliverytype, d.deliverydesc, d.addressid, d.deliverystatus, "
 						+ "a.address, a.addressnumber, a.addresscompl, a.city, a.state "
-						+ "left join address a on a.addressid = d.addressid"
-						+ "FROM delivery d where deliverystatus = ? ");
+						+ "FROM delivery d "
+						+ "left join address a on a.addressid = d.addressid "
+						+ "where deliverystatus = ? ");
 
 		filters.forEach(filter -> {
 			sql.append(" and").append(filter.getFilter());
@@ -84,5 +85,24 @@ public class DeliveryDao {
 		}
 		con.close();
 
+	}
+
+	public void getDeliveryTypeList(DeliveryType types) 
+		throws ServiceBusinessException, SQLException, Exception {
+
+			con = SysConfig.getConnection();
+
+		StringBuilder sql = new StringBuilder(
+				"SELECT d.typeid, d.typedescription "
+						+ "a.address, a.addressnumber, a.addresscompl, a.city, a.state "
+						+ "FROM delivery d where deliverystatus = ? ");
+		
+		PreparedStatement stmt = con.prepareStatement(sql.toString());
+		stmt.setString(1,  Status.ACTIVE.getValue());
+		ResultSet rs = stmt.executeQuery();
+
+		while(rs.next()){
+			types.add(new DeliveryType(rs.getInt("typeId"), rs.getString("typedescription")))
+		}
 	}
 }
