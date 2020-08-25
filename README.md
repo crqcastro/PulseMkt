@@ -1016,22 +1016,9 @@ $response = $client->getResponse();
 echo $response->getBody();
 ```
 
-
 \
 \
 \
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-
-
 ## Instalation Guide
 
 [![github]][github-url] 
