@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -39,6 +40,29 @@ public class OrderEndPoint {
 			service.getOrderList(orders, strInitDate, strEndDate, status, orderid, offset, limit);
 
 			response = Response.ok().entity(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(orders));
+		} catch (ServiceBusinessException e) {
+			response = Response.status(Integer.parseInt(e.getMessage())).entity(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			response = Response.serverError();
+		}
+		return response
+				.header(HttpHeaders.AUTHORIZATION,
+						Authorization.toToken(Authorization.fromToken(req.getHeader(HttpHeaders.AUTHORIZATION))))
+				.build();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response getOrder(@Context HttpServletRequest req, @PathParam("id") Integer orderid) {
+
+		ResponseBuilder response = Response.ok();
+		try {
+			Collection<Order> orders = new ArrayList<Order>();
+			service.getOrderList(orders, null, null, null, orderid, null, null);
+
+			response = Response.ok().entity(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(orders.toArray()[0]));
 		} catch (ServiceBusinessException e) {
 			response = Response.status(Integer.parseInt(e.getMessage())).entity(e.getMessage());
 		} catch (Exception e) {

@@ -23,13 +23,13 @@ public class QueryFilter {
 		String filter;
 		switch(comparator){
 		case IN:
-			filter = String.format(" %s %s (%s) ", this.field, this.comparator, values.toString().replace("[", "").replace("]",""));
+			filter = String.format(" %s %s (%s) ", this.field, this.comparator.getValue(), values.toString().replace("[", "").replace("]",""));
 			break;
 		case LIKE:
-			filter = String.format(" %s %s '%s' ", this.field, this.comparator, "%"+values[0]+"%");
+			filter = String.format(" %s %s '%s' ", this.field, this.comparator.getValue(), "%"+values[0]+"%");
 			break;
 		default:
-			filter = String.format(" %s %s %s ", this.field, this.comparator, values[0]);
+			filter = String.format(" %s %s %s ", this.field, this.comparator.getValue(), values[0]);
 			break;
 		}
 		return filter;

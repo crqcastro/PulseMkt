@@ -1,8 +1,12 @@
 package br.com.cesarcastro.pulsemkt.model;
 
+import com.google.gson.annotations.Expose;
+
 public final class PaymentModel {
 
+	@Expose
 	private Integer id;
+	@Expose
 	private String description;
 
 	public Integer getId() {

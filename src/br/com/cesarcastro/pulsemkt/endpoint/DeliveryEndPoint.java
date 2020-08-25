@@ -93,7 +93,7 @@ public class DeliveryEndPoint {
 			Collection<DeliveryType> types = new ArrayList<DeliveryType>();
 			service.getDeliveryTypeList(types);
 
-			response = Response.ok(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(deliveries));
+			response = Response.ok(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(types));
 		} catch (ServiceBusinessException e) {
 			response = Response.status(Integer.parseInt(e.getMessage())).entity(e.getMessage());
 		} catch (Exception e) {

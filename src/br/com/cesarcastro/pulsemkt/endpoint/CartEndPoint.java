@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
+import br.com.cesarcastro.pulsemkt.dao.LoginDao;
 import br.com.cesarcastro.pulsemkt.exception.ServiceBusinessException;
 import br.com.cesarcastro.pulsemkt.model.Authorization;
 import br.com.cesarcastro.pulsemkt.model.Cart;
@@ -58,19 +59,21 @@ public class CartEndPoint {
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/{cartid}/product/{productid}")
-	public Response addProduct(@PathParam("cartid") Integer cartid, @PathParam("productid") Integer productid,
+	@Path("/{cartid}/product/{productid}/{quantity}")
+	public Response addProduct(@PathParam("cartid") Integer cartid, @PathParam("productid") Integer productid, @PathParam("quantity") BigDecimal quantity,
 			@Context HttpServletRequest req) {
 
 		ResponseBuilder response = Response.accepted();
 
 		try {
 			Cart cart = service.getCartById(cartid);
-			if (cart.compareUser(AppUtils.getUserFromAuthToken(req.getHeader(HttpHeaders.AUTHORIZATION)))) {
+			User user = AppUtils.getUserFromAuthToken(req.getHeader(HttpHeaders.AUTHORIZATION));
+			new LoginDao().login(user);
+			if (!cart.compareUserWithoutRole(user)) {
 				response = Response.status(Status.CONFLICT)
 						.entity("{\"message\":\"The requisition user is not the same as the shopping cart\"}");
 			} else {
-				service.insertProduct(cartid, productid);
+				service.insertProduct(cartid, productid, quantity);
 			}
 		} catch (ServiceBusinessException e) {
 			response = Response.status(Integer.parseInt(e.getMessage())).entity(e.getMessage());
@@ -88,19 +91,21 @@ public class CartEndPoint {
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/{cartid}/product/{productid}")
-	public Response remProduct(@PathParam("cartid") Integer cartid, @PathParam("productid") Integer productid,
+	@Path("/{cartid}/product/{productid}/{quantity}")
+	public Response remProduct(@PathParam("cartid") Integer cartid, @PathParam("productid") Integer productid, @PathParam("quantity") BigDecimal quantity,
 			@Context HttpServletRequest req) {
 
 		ResponseBuilder response = Response.accepted();
 
 		try {
 			Cart cart = service.getCartById(cartid);
-			if (cart.compareUser(AppUtils.getUserFromAuthToken(req.getHeader(HttpHeaders.AUTHORIZATION)))) {
+			User user = AppUtils.getUserFromAuthToken(req.getHeader(HttpHeaders.AUTHORIZATION));
+			new LoginDao().login(user);
+			if (!cart.compareUserWithoutRole(user)) {
 				response = Response.status(Status.CONFLICT)
 						.entity("{\"message\":\"The requisition user is not the same as the shopping cart\"}");
 			} else {
-				service.deleteProduct(cartid, productid);
+				service.deleteProduct(cartid, productid, quantity);
 			}
 		} catch (ServiceBusinessException e) {
 			response = Response.status(Integer.parseInt(e.getMessage())).entity(e.getMessage());
@@ -132,6 +137,7 @@ public class CartEndPoint {
 
 			if (cart.isClosable()) {
 				service.finalize(cart);
+				response = Response.created(URI.create(req.getRequestURI().replace("cart", "orders") + cart.getId()));
 			} else {
 				response = Response.notModified(cart.toJson());
 			}

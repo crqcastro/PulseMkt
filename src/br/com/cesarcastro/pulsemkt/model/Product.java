@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Product implements Comparable<Product>{
 
@@ -14,9 +15,14 @@ public class Product implements Comparable<Product>{
 	@Expose
 	private String description;
 	@Expose
+	@SerializedName("unitValue")
 	private BigDecimal value;
 	@Expose
 	private String image;
+	@Expose
+	private BigDecimal quantity;
+	@Expose
+	private BigDecimal amount;
 	
 	public Product(Integer id, String codBar, String description, BigDecimal value, String image) {
 		this.id = id;
@@ -26,6 +32,16 @@ public class Product implements Comparable<Product>{
 		this.image = image;
 	}
 
+	public Product(Integer id, String codBar, String description, BigDecimal value, String image, BigDecimal quantity) {
+		this.id = id;
+		this.codBar = codBar;
+		this.description = description;
+		this.value = value;
+		this.image = image;
+		this.quantity = quantity;
+		this.amount = this.value.multiply(this.quantity);
+	}
+	
 	public String getCodBar() {
 		return codBar;
 	}
@@ -82,5 +98,13 @@ public class Product implements Comparable<Product>{
 
 	public Integer getId() {
 		return this.id;
+	}
+
+	public BigDecimal getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(BigDecimal quantity) {
+		this.quantity = quantity;
 	}
 }

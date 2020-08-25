@@ -37,11 +37,11 @@ public class CartService {
 
 	}
 
-	public void insertProduct(Integer cartid, Integer productid) throws ServiceBusinessException {
+	public void insertProduct(Integer cartid, Integer productid, BigDecimal quantity) throws ServiceBusinessException {
 
 		try {
 
-			dao.insertProduct(cartid, productid);
+			dao.insertProduct(cartid, productid, quantity);
 
 		} catch (ServiceBusinessException e) {
 			throw new ServiceBusinessException("404", e);
@@ -59,11 +59,11 @@ public class CartService {
 
 	}
 
-	public void deleteProduct(Integer cartid, Integer productid) throws ServiceBusinessException {
+	public void deleteProduct(Integer cartid, Integer productid, BigDecimal quantity) throws ServiceBusinessException {
 
 		try {
 
-			dao.deleteProduct(cartid, productid);
+			dao.deleteProduct(cartid, productid, quantity);
 
 		} catch (ServiceBusinessException e) {
 			throw new ServiceBusinessException("404", e);

@@ -12,6 +12,7 @@ import br.com.cesarcastro.pulsemkt.dao.DeliveryDao;
 import br.com.cesarcastro.pulsemkt.enums.Comparator;
 import br.com.cesarcastro.pulsemkt.exception.ServiceBusinessException;
 import br.com.cesarcastro.pulsemkt.model.Delivery;
+import br.com.cesarcastro.pulsemkt.model.DeliveryType;
 import br.com.cesarcastro.pulsemkt.model.QueryFilter;
 import br.com.cesarcastro.pulsemkt.util.SysConfig;
 
@@ -60,7 +61,7 @@ public class DeliveryService {
 
 	}
 
-	public void getDeliveryTypeList(DeliveryType types)throws ServiceBusinessException {
+	public void getDeliveryTypeList(Collection<DeliveryType> types) throws ServiceBusinessException {
 		try {
 			dao.getDeliveryTypeList(types);
 		} catch (SQLException e) {
@@ -74,5 +75,6 @@ public class DeliveryService {
 			throw new ServiceBusinessException(Response.Status.INTERNAL_SERVER_ERROR.toString(), e);
 
 		}
+	}
 
 }

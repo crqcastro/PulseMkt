@@ -42,21 +42,44 @@ public class CartDao {
 		con.close();
 	}
 
-	public void insertProduct(Integer id, Integer productid) throws SQLException, ServiceBusinessException, Exception {
+	public void insertProduct(Integer id, Integer productid, BigDecimal quantity) throws SQLException, ServiceBusinessException, Exception {
 
-		if (isActive(getCartById(id)))
+		if (!isActive(getCartById(id)))
 			throw new ServiceBusinessException("Resource is inactive");
 
 		con = SysConfig.getConnection();
 
 		Product product = new ProductDao().getProductById(productid);
-		String sql = "insert into cart_products (cartid, productid) values (?, ?, ?)";
+		
+		String units = "select amount from cart_products where cartid = ? and productid = ?";
+		PreparedStatement pt = con.prepareStatement(units);
+		pt.setInt(1, id);
+		pt.setInt(2, productid);
+		
+		ResultSet rs = pt.executeQuery();
+		BigDecimal qtyUnits = BigDecimal.ZERO;
+		String sql = null;
+		if(rs.next()) {
+			qtyUnits = rs.getBigDecimal("amount");
+			if(qtyUnits.compareTo(BigDecimal.ZERO)>0)
+				sql = "Update cart_products set amount = ? where cartid = ? and productid = ?";
+		}else {
+		 sql = "insert into cart_products (cartid, productid, amount, unitValue) values (?, ?, ?, ?)";
+		}
 
 		PreparedStatement stmt = con.prepareStatement(sql);
 
-		stmt.setInt(1, id);
-		stmt.setInt(2, productid);
-		stmt.setBigDecimal(3, product.getValue());
+		if(qtyUnits.compareTo(BigDecimal.ZERO)==0) {
+			stmt.setInt(1, id);
+			stmt.setInt(2, productid);
+			stmt.setBigDecimal(3, quantity);
+			stmt.setBigDecimal(4, product.getValue());
+		}else {
+			stmt.setBigDecimal(1, qtyUnits.add(quantity));
+			stmt.setInt(2, id);
+			stmt.setInt(3, productid);
+		}
+		
 		int qty = stmt.executeUpdate();
 
 		stmt.close();
@@ -67,7 +90,7 @@ public class CartDao {
 		}
 	}
 
-	public void deleteProduct(Integer cartid, Integer productid)
+	public void deleteProduct(Integer cartid, Integer productid, BigDecimal quantity)
 			throws SQLException, ServiceBusinessException, Exception {
 
 		if (!isActive(getCartById(cartid)))
@@ -75,12 +98,40 @@ public class CartDao {
 
 		con = SysConfig.getConnection();
 
-		String sql = "delete from cart_products where cartid = ? and productid = ?";
-
-		PreparedStatement stmt = con.prepareStatement(sql);
-
-		stmt.setInt(1, cartid);
-		stmt.setInt(2, productid);
+		String units = "select amount from cart_products where cartid = ? and productid = ?";
+		PreparedStatement pt = con.prepareStatement(units);
+		pt.setInt(1, cartid);
+		pt.setInt(2, productid);
+		
+		ResultSet rs = pt.executeQuery();
+		BigDecimal qtyUnits = BigDecimal.ZERO;
+		String sqlUpd = null;
+		String sqlDel = null;
+		if(rs.next()) {
+			qtyUnits = rs.getBigDecimal("amount");
+			if(qtyUnits.compareTo(BigDecimal.ZERO)>0)
+				sqlUpd = "Update cart_products set amount = ? where cartid = ? and productid = ?";
+		}else {
+			sqlDel = "delete from cart_products where cartid = ? and productid = ?";
+		}
+		
+		PreparedStatement stmt;
+		if(qtyUnits.compareTo(BigDecimal.ZERO)==0) {
+			stmt = con.prepareStatement(sqlDel);
+			stmt.setInt(1, cartid);
+			stmt.setInt(2, productid);
+		}else if(qtyUnits.compareTo(quantity)<=0) {
+			stmt = con.prepareStatement(sqlDel);
+			stmt.setInt(1, cartid);
+			stmt.setInt(2, productid);
+		}
+		else {
+			stmt = con.prepareStatement(sqlUpd);
+			stmt.setBigDecimal(1, qtyUnits.subtract(quantity));
+			stmt.setInt(2, cartid);
+			stmt.setInt(3, productid);
+		}
+		
 		int qty = stmt.executeUpdate();
 
 		stmt.close();
@@ -99,7 +150,8 @@ public class CartDao {
 
 		con = SysConfig.getConnection();
 
-		String sql = "select c.cartstatus, c.cartid, u.userid, u.username, u.useremail, u.usernumber, a.addressid, a.address, a.addressnumber, a.addresscompl, a.city, a.state from carts c "
+		String sql = "select c.cartstatus, c.cartid, u.userid, u.username, u.useremail, u.usernumber, a.addressid, a.address, a.addressnumber, a.addresscompl, a.city, a.state "
+				+ "from carts c "
 				+ "inner join users u on u.userid = c.userid and u.userstatus = ? "
 				+ "inner join address a on a.addressid = u.addressid " + "where c.cartid = ?";
 
@@ -112,7 +164,8 @@ public class CartDao {
 
 		if (rs.next()) {
 			
-			String itemsQry = "select p.productid, p.productbarcode, p.productdescription, p.productvalue, productimg"
+			String itemsQry = "select p.productid, p.productbarcode, p.productdescription, cp.unitvalue productvalue, p.productimg,"
+					+ " cp.amount"
 					+ " from products p inner join cart_products cp on cp.productid = p.productid where cp.cartid = ?";
 
 			PreparedStatement itemsStmt = con.prepareStatement(itemsQry);
@@ -123,7 +176,7 @@ public class CartDao {
 			while (rsItems.next()) {
 				products.add(new Product(rsItems.getInt("productid"), rsItems.getString("productbarcode"),
 						rsItems.getString("productdescription"), rsItems.getBigDecimal("productValue"),
-						rsItems.getString("productimg")));
+						rsItems.getString("productimg"), rsItems.getBigDecimal("amount")));
 			}
 
 			User user = new User();
@@ -141,7 +194,7 @@ public class CartDao {
 			user.setAddress(address);
 
 			cart = new Cart(rs.getInt("cartid"), user, products);
-			cart.setStatus(Status.valueOf(rs.getString("cartstatus")));
+			cart.setStatus(Status.getStatusByDesc(rs.getString("cartstatus")));
 			String pay = "select p.paymethodid, p.paymethoddescription, m.amount from cart_paymethods m "
 					+ "inner join paymethods p on p.paymethodid = m.paymethodid " + "where m.cartid = ?";
 
@@ -179,7 +232,7 @@ public class CartDao {
 	public void addPaymentMethod(Integer cartId, Integer paymentId, BigDecimal value)
 			throws SQLException, ServiceBusinessException, Exception {
 
-		if (isActive(getCartById(cartId)))
+		if (!isActive(getCartById(cartId)))
 			throw new ServiceBusinessException("Resource is inactive");
 
 		con = SysConfig.getConnection();
@@ -246,27 +299,22 @@ public class CartDao {
 
 	public void finalize(Cart cart) throws ServiceBusinessException, SQLException, Exception {
 
-		if (isActive(cart))
+		if (!isActive(cart))
 			throw new ServiceBusinessException("Resource is inactive");
 
 		con = SysConfig.getConnection();
-		String sql = "update carts set cartstatus = ? where cartid = ?";
+		String sql = "update carts set cartstatus = ?, enddate = now() where cartid = ?";
 		PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		stmt.setString(1, cart.getStatus().getValue());
 		stmt.setInt(2, cart.getId());
-
-		ResultSet rs = stmt.getGeneratedKeys();
-
-		if (rs.next()) {
-			cart.setOrderid(rs.getInt(1));
-		}
+		int qty = stmt.executeUpdate();
+		cart.setOrderid(cart.getId());
 
 		stmt.close();
 
 		cart.getPaymentList().stream().filter(payment -> payment.isConcluded()).forEach(payment -> {
 			// String ins = "insert into
 		});
-		int qty = stmt.executeUpdate();
 
 		con.close();
 
@@ -300,7 +348,7 @@ public class CartDao {
 	public boolean isActive(Cart cart) throws ServiceBusinessException, SQLException, Exception {
 		con = SysConfig.getConnection();
 		boolean isActive = false;
-		String qry = "select 0 from cart c where c.cartid = ? and c.cartStatus = ?";
+		String qry = "select 0 from carts c where c.cartid = ? and c.cartStatus = ?";
 		PreparedStatement st = con.prepareStatement(qry);
 		st.setInt(1, cart.getId());
 		st.setString(2, Status.ACTIVE.getValue());

@@ -9,6 +9,7 @@ import java.util.Collection;
 import br.com.cesarcastro.pulsemkt.exception.ServiceBusinessException;
 import br.com.cesarcastro.pulsemkt.model.Address;
 import br.com.cesarcastro.pulsemkt.model.Delivery;
+import br.com.cesarcastro.pulsemkt.model.DeliveryType;
 import br.com.cesarcastro.pulsemkt.model.Order;
 import br.com.cesarcastro.pulsemkt.model.PaymentMethod;
 import br.com.cesarcastro.pulsemkt.model.Product;
@@ -27,11 +28,11 @@ public class OrderDao {
 		StringBuilder sql = new StringBuilder("select c.cartid, u.userid, u.useremail, u.username, u.useremail, u.usernumber, u.userstatus, ");
 		sql.append("c.enddate, a.address, a.addresscompl, a.addressid, a.addressnumber, a.city, a.state, ");
 		sql.append("a.address useraddress, a.addresscompl useraddresscompl, a.addressid useraddressid, a.addressnumber useraddressnumber, a.city usercity, a.state useraddressstate, ");
-		sql.append("d.deliverydesc, d.deliveryid, d.deliverystatus, d.deliverytype ");
+		sql.append("d.deliverydesc, d.deliveryid, d.deliverystatus, d.deliverytype, g.description_detail ");
 		sql.append("from carts c ");
 		sql.append("inner join users u on u.userid = c.userid ");
-		sql.append("inner join cart_paymethods cp on cp.cartId = c.cartId ");
 		sql.append("left join delivery d on d.deliveryid = c.deliveryid ");
+		sql.append("left join generic g on g.detailid = d.deliverytype and g.id = 1 ");
 		sql.append("left join address a on a.addressid = d.addressid ");
 		sql.append("left join address ua on ua.addressid = u.addressid ");
 		sql.append("where 1=1 ");
@@ -65,7 +66,7 @@ public class OrderDao {
 			user.setAddress(usrAddress);
 			Delivery delivery = new Delivery();
 			delivery.setDescription(rs.getString("deliverydesc"));
-			delivery.setType(rs.getInt("deliverytype"));
+			delivery.setType(new DeliveryType(rs.getInt("deliverytype"), rs.getString("description_detail")));
 			delivery.setId(rs.getInt("deliveryid"));
 			Address address = new Address();
 			address.setAddressId(rs.getInt("addressid"));
@@ -95,7 +96,7 @@ public class OrderDao {
 				order.getPaymentList().add(pm);
 			}
 			
-			String prodSql = "select p.productId, p.productBarcode, p.productDescription, p.productImg, cp.qty amount, cp.unitValue " + 
+			String prodSql = "select p.productId, p.productBarcode, p.productDescription, p.productImg, cp.amount, cp.unitValue " + 
 					"from cart_products cp " + 
 					"inner join products p on p.productId = cp.productId " +
 					" where cp.cartid = ?";

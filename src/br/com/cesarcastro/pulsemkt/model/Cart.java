@@ -23,7 +23,7 @@ public class Cart {
 	@Expose
 	private BigDecimal amount = BigDecimal.ZERO;
 	@Expose
-	private Integer qtyProducts;
+	private BigDecimal qtyProducts;
 	@Expose
 	private BigDecimal paymentAmount = BigDecimal.ZERO;
 	@Expose
@@ -146,11 +146,11 @@ public class Cart {
 	}
 
 	private void calculateAmount() {
-		this.amount = products.stream().map(x -> x.getValue()).reduce(BigDecimal.ZERO, BigDecimal::add);
+		this.amount = products.stream().map(x -> x.getValue().multiply(x.getQuantity())).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 	private void calculateQty() {
-		this.qtyProducts = products.size();
+		this.qtyProducts = products.stream().map(x -> x.getQuantity()).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 	public void addProduct(Product product) {
@@ -169,5 +169,9 @@ public class Cart {
 	public boolean compareUser(User user) {
 		return (this.user.getId().equals(user.getId()) && this.user.getName().contentEquals(user.getName())
 				&& this.user.getUserRole() == user.getUserRole());
+	}
+	
+	public boolean compareUserWithoutRole(User user) {
+		return (this.user.getId().equals(user.getId()) && this.user.getName().contentEquals(user.getName()));
 	}
 }

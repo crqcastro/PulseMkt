@@ -307,9 +307,10 @@ echo $response->getBody();
 
 ### Add product to cart
 To add a product to the cart
-##### PUT:/cart/{cartid}/product/{productid}
+##### PUT:/cart/{cartid}/product/{productid}/{quantity}
 * Cartid: Id returned at cart creation
-* Productid: Id de um produto válido. A lista de produtos pode ser obtida em *Listar Produtos*
+* Productid: Valid product id. The product list can be obtained at *List Products*
+* Quantity: Quantity of a product to be added
 
 ###### Request
 * Authorization: Last received valid token
@@ -325,7 +326,7 @@ To add a product to the cart
 ###### CURL
 ```curl
 curl --request PUT \
-  --url http://localhost:8080/pulsemkt/cart/1/product/1 \
+  --url http://localhost:8080/pulsemkt/cart/1/product/1/5 \
   --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
 ```
 
@@ -336,7 +337,7 @@ curl --request PUT \
 OkHttpClient client = new OkHttpClient();
 
 Request request = new Request.Builder()
-  .url("http://localhost:8080/pulsemkt/cart/1/product/1")
+  .url("http://localhost:8080/pulsemkt/cart/1/product/1/5")
   .put(null)
   .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
   .build();
@@ -353,7 +354,7 @@ Response response = client.newCall(request).execute();
 $client = new http\Client;
 $request = new http\Client\Request;
 
-$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/product/1');
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/product/1/5');
 $request->setRequestMethod('PUT');
 $request->setHeaders(array(
   'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
@@ -367,9 +368,10 @@ echo $response->getBody();
 
 ### To remove product to cart
 To add a product to the cart
-##### DELETE:/cart/{cartid}/product/{productid}
+##### DELETE:/cart/{cartid}/product/{productid}/{quantity}
 * Cartid: Id returned at cart creation
 * Productid: Valid product id. The product list can be obtained at *List Products*
+* Quantity: Quantity of a product to be removed
 
 ###### Request
 * Authorization: Last received valid token
@@ -385,7 +387,7 @@ To add a product to the cart
 ###### CURL
 ```curl
 curl --request DELETE \
-  --url http://localhost:8080/pulsemkt/cart/1/product/1 \
+  --url http://localhost:8080/pulsemkt/cart/1/product/1/3 \
   --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
 ```
 
@@ -396,7 +398,7 @@ curl --request DELETE \
 OkHttpClient client = new OkHttpClient();
 
 Request request = new Request.Builder()
-  .url("http://localhost:8080/pulsemkt/cart/1/product/1")
+  .url("http://localhost:8080/pulsemkt/cart/1/product/1/3")
   .delete(null)
   .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
   .build();
@@ -413,7 +415,7 @@ Response response = client.newCall(request).execute();
 $client = new http\Client;
 $request = new http\Client\Request;
 
-$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/product/1');
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/product/1/3');
 $request->setRequestMethod('DELETE');
 $request->setHeaders(array(
   'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
@@ -660,9 +662,61 @@ $response = $client->getResponse();
 echo $response->getBody();
 ```
 
-################################
-listar lojas entra aqui
-################################
+### Stores List
+Get the list of available stores
+##### GET:/stores
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* HTTP Status 200 - OK - When success
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### CURL
+```curl
+curl --request GET
+  --url http://localhost:8080/pulsemkt/stores \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/stores")
+  .get()
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/stores');
+$request->setRequestMethod('GET');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
 
 
 ### Add  or change delivery method
@@ -780,14 +834,202 @@ $response = $client->getResponse();
 echo $response->getBody();
 ```
 
+### Checkout
+Checkout
+##### :POST/{cartid}/checkout
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* Location: Order resource location
+* HTTP Status 201 - ACCEPTED - When success
+* HTTP Status 409 - CONFLICT - When the requisition user is not the same user who created the cart
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### CURL
+```curl
+curl --request POST
+  --url http://localhost:8080/pulsemkt/cart/1/checkout \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/cart/1/checkout")
+  .post()
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/checkout');
+$request->setRequestMethod('POST');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+### Order List
+Get the list of orders
+* This feature is only available to administrators
+
+##### GET:/orders
+* Query Parameters
+  * Offset: Used in pagination to limit the start of the query scope
+  * Limit: Used in pagination to limit the amount of results. Maximum 30 products per search
+  * Init: Min date
+  * End: Max date
+  * OrderID: To obtain a specific order
+
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* HTTP Status 200 - OK - When success
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### CURL
+```curl
+curl --request GET
+  --url http://localhost:8080/pulsemkt/orders?init=8-25-2020&end=8-25-2020&status=D&orderid=1&offset=0&limit=30 \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/orders?init=8-25-2020&end=8-25-2020&status=D&orderid=1&offset=0&limit=30")
+  .get()
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/orders?init=8-25-2020&end=8-25-2020&status=D&orderid=1&offset=0&limit=30');
+$request->setRequestMethod('GET');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+### Detail a order
+Get a especific orders
+
+##### GET:/orders/{id}
+* Id: Order identification
+
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* HTTP Status 200 - OK - When success
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### CURL
+```curl
+curl --request GET
+  --url http://localhost:8080/pulsemkt/orders/1 \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/orders/1")
+  .get()
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/orders/1');
+$request->setRequestMethod('GET');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
 
 
-
-
-
-
-
-
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
 
 
 ## Instalation Guide

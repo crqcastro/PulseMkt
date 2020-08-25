@@ -28,6 +28,14 @@ drop table if exists delivery;
 
 drop table if exists address;
 
+drop table if exists generic;
+
+create table generic(
+id int not null,
+detailid int not null,
+description_detail varchar(80) not null,
+primary key (id, detailid)) engine=innodb;
+
 create table address( addressid int not null auto_increment primary key,
 address text not null,
 addressnumber varchar(10),
@@ -47,7 +55,7 @@ foreign key (addressid) references address(addressid),
 unique(useremail)) engine = InnoDB;
 
 create table delivery( deliveryid int not null auto_increment primary key,
-deliverytype int not null,
+deliverytype int not null comment 'References pulstmkt.generic id = 1',
 deliverydesc varchar(100) not null,
 addressid int,
 deliverystatus char(1) not null default 'A',
@@ -96,7 +104,9 @@ insert into products (productBarcode, productDescription, productValue) values (
 
 insert into address (address, addressnumber, addresscompl, city, state) values ('Av Daniel de la Touche', '123', 'Ao lado da BlackSwain', 'São Luis', 'MA');
 
-insert into delivery (deliverytype, deliverydesc, addressid, deliverystatus) values (1, 'withdraw in store', null, 'A'), (2, 'Mateus Cohama', 1, 'A');
+insert into generic (id, detailid, description_detail) values (1, 1, 'Withdraw in store'), (1,2,'Deliver to address');
+
+insert into delivery (deliverytype, deliverydesc, addressid, deliverystatus) values (2, 'User Address', null, 'A'), (1, 'Mateus Cohama', 1, 'A');
 
 insert into users (username, useremail, usernumber, userpwd, userStatus, addressid, userrole) values('Admin', 'admin@pulsemkt.com', '99999999999', sha1('Admin'), 'A', 1, 'ADMINISTRATOR');
 

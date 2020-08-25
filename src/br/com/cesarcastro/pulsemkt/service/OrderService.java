@@ -24,13 +24,13 @@ public class OrderService {
 		try {
 			Collection<QueryFilter> filters = new ArrayList<QueryFilter>();
 			if (!StringUtils.isEmpty(strInitDate))
-				filters.add(new QueryFilter("cart.enddate", Comparator.GE, "str_to_date('" + strInitDate + "', '%m-%d-%Y')"));
+				filters.add(new QueryFilter("c.enddate", Comparator.GE, "str_to_date('" + strInitDate + "', '%m-%d-%Y')"));
 			if (!StringUtils.isEmpty(strEndDate))
-				filters.add(new QueryFilter("cart.enddate", Comparator.LE, "str_to_date('" + strInitDate + "', '%m-%d-%Y')"));
+				filters.add(new QueryFilter("c.enddate", Comparator.LE, "str_to_date('" + strEndDate + "', '%m-%d-%Y')"));
 			if (!StringUtils.isEmpty(status))
-				filters.add(new QueryFilter("cart.cartstatus", Comparator.EQ, status));
-			if (!StringUtils.isEmpty(orderid.toString()))
-				filters.add(new QueryFilter("cart.cartid", Comparator.EQ, orderid.toString()));
+				filters.add(new QueryFilter("c.cartstatus", Comparator.EQ, status));
+			if (orderid!=null && !StringUtils.isEmpty(orderid.toString()))
+				filters.add(new QueryFilter("c.cartid", Comparator.EQ, orderid.toString()));
 
 			dao.getOrderList(orders, filters, offset, limit);
 		} catch (ServiceBusinessException e) {

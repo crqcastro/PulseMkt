@@ -11,6 +11,7 @@ import br.com.cesarcastro.pulsemkt.enums.Status;
 import br.com.cesarcastro.pulsemkt.exception.ServiceBusinessException;
 import br.com.cesarcastro.pulsemkt.model.Address;
 import br.com.cesarcastro.pulsemkt.model.Delivery;
+import br.com.cesarcastro.pulsemkt.model.DeliveryType;
 import br.com.cesarcastro.pulsemkt.model.QueryFilter;
 import br.com.cesarcastro.pulsemkt.util.SysConfig;
 
@@ -25,7 +26,7 @@ public class DeliveryDao {
 		String insSql = "insert into delivery (deliverytype, deliverydesc, addressid) " + "values (?, ?, ?)";
 
 		PreparedStatement stmt = con.prepareStatement(insSql, Statement.RETURN_GENERATED_KEYS);
-		stmt.setInt(1, delivery.getType());
+		stmt.setInt(1, delivery.getType().getId());
 		stmt.setString(2, delivery.getDescription());
 		stmt.setInt(3, delivery.getAddress().getAddressId());
 
@@ -49,8 +50,9 @@ public class DeliveryDao {
 
 		StringBuilder sql = new StringBuilder(
 				"SELECT d.deliveryid, d.deliverytype, d.deliverydesc, d.addressid, d.deliverystatus, "
-						+ "a.address, a.addressnumber, a.addresscompl, a.city, a.state "
+						+ "a.address, a.addressnumber, a.addresscompl, a.city, a.state, g.description_detail "
 						+ "FROM delivery d "
+						+ "inner join generic g on g.detailid = d.deliverytype and g.id = 1 "
 						+ "left join address a on a.addressid = d.addressid "
 						+ "where deliverystatus = ? ");
 
@@ -68,7 +70,7 @@ public class DeliveryDao {
 		while (rs.next()) {
 			Delivery delivery = new Delivery();
 			delivery.setId(rs.getInt("deliveryid"));
-			delivery.setType(rs.getInt("deliverytype"));
+			delivery.setType(new DeliveryType(rs.getInt("deliverytype"), rs.getString("description_detail")));
 			delivery.setDescription(rs.getString("deliverydesc"));
 			Integer addressId = rs.getInt("addressid");
 			if (addressId != null) {
@@ -87,22 +89,24 @@ public class DeliveryDao {
 
 	}
 
-	public void getDeliveryTypeList(DeliveryType types) 
+	public void getDeliveryTypeList(Collection<DeliveryType> types) 
 		throws ServiceBusinessException, SQLException, Exception {
 
 			con = SysConfig.getConnection();
 
 		StringBuilder sql = new StringBuilder(
-				"SELECT d.typeid, d.typedescription "
-						+ "a.address, a.addressnumber, a.addresscompl, a.city, a.state "
-						+ "FROM delivery d where deliverystatus = ? ");
+				"SELECT g.deliverytype, g.description_detail "
+						+ "from generic g where g.id = 1 ");
 		
 		PreparedStatement stmt = con.prepareStatement(sql.toString());
-		stmt.setString(1,  Status.ACTIVE.getValue());
 		ResultSet rs = stmt.executeQuery();
 
 		while(rs.next()){
-			types.add(new DeliveryType(rs.getInt("typeId"), rs.getString("typedescription")))
+			types.add(new DeliveryType(rs.getInt("typeId"), rs.getString("typedescription")));
 		}
+		
+		rs.close();
+		stmt.close();
+		con.close();
 	}
 }

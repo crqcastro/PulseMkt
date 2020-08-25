@@ -1,12 +1,14 @@
 package br.com.cesarcastro.pulsemkt.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 
 
 public class DeliveryType {
 
     @Expose
-    private Intger id;
+    private Integer id;
     @Expose
     private String description;
 
@@ -34,7 +36,7 @@ public class DeliveryType {
     }
 
     public String toString(){
-        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create().tojson(this);
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create().toJson(this);
     }
 
     public static DeliveryType formJson(String json){
