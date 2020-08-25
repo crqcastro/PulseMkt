@@ -67,13 +67,28 @@ public class StoreDao {
 	public void create(Delivery delivery) throws ServiceBusinessException, SQLException, Exception {
 
 		con = SysConfig.getConnection();
-
+		
+		String addr = "INSERT INTO pulsemkt.address (address, addressnumber, addresscompl, city, state) VALUES(?, ?, ?, ?, ?)";
+		PreparedStatement ps = con.prepareStatement(addr, Statement.RETURN_GENERATED_KEYS);
+		ps.setString(1, delivery.getAddress().getAddress());
+		ps.setString(2, delivery.getAddress().getNumber());
+		ps.setString(3, delivery.getAddress().getComplement());
+		ps.setString(4, delivery.getAddress().getCity());
+		ps.setString(5, delivery.getAddress().getState());
+		
+		ps.executeUpdate();
+		ResultSet rsAdd = ps.getGeneratedKeys();
+		
+		rsAdd.next();
+		int addressId = rsAdd.getInt(1);
+			
+		
 		String insSql = "insert into delivery (deliverytype, deliverydesc, addressid) " + "values (?, ?, ?)";
 
 		PreparedStatement stmt = con.prepareStatement(insSql, Statement.RETURN_GENERATED_KEYS);
-		stmt.setInt(1, delivery.getType().getId());
+		stmt.setInt(1, 1);
 		stmt.setString(2, delivery.getDescription());
-		stmt.setInt(3, delivery.getAddress().getAddressId());
+		stmt.setInt(3, addressId);
 
 		stmt.executeUpdate();
 

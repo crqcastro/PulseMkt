@@ -68,7 +68,10 @@ public class StoreEndPoint {
 				response = Response.status(Status.FORBIDDEN);
 			} else {
 				service.create(delivery);
-				response = Response.created(URI.create(req.getRequestURI() + delivery.getId()));
+				String url = req.getRequestURI();
+				if(url.length()>url.lastIndexOf("/")+1)
+					url = url+"/";
+				response = Response.created(URI.create(url + delivery.getId()));
 			}
 		} catch (ServiceBusinessException e) {
 			response = Response.status(Integer.parseInt(e.getMessage())).entity(e.getMessage());
