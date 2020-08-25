@@ -25,7 +25,7 @@ GET | /stores | N
 POST | /store | S
 POST | /cart/checkout | N
 GET | /orders/{Integer:orderid} | N
-GET | /oredrs | S
+GET | /orders | S
 
 
 
