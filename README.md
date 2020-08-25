@@ -1191,6 +1191,8 @@ Run the database application script
 database-script/pulsemkt.sql
 
 ```
+[![der]][der-link]
+
 #### Step 2
 Create user in MySQL database and specify in the configuration file DBConfig.properties located in the resources directory
 ```
@@ -1235,3 +1237,5 @@ db.url=jdbc:mysql://localhost:3306/pulsemkt?autoReconnect=true&useSSL=false&useT
 [php-url]:https://www.php.net/
 [curl]:https://raw.githubusercontent.com/crqcastro/svg/master/curl.svg
 [curl-url]:https://curl.haxx.se/
+[der]:https://raw.githubusercontent.com/crqcastro/PulseMkt/master/database-script/DER.png
+[der-link]:https://raw.githubusercontent.com/crqcastro/PulseMkt/master/database-script/DER.png
