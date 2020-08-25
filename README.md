@@ -525,7 +525,7 @@ Response response = client.newCall(request).execute();
 ```
 
 [![php]][php-url]
-(#anchors-in-markdown)
+[#anchors-in-markdown]
 ###### PHP
 ```php
 <?php
