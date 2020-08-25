@@ -18,9 +18,11 @@ DELETE | /cart/{Integer:cartid}/product/{Integer:productid}/{Double:quantity} | 
 GET | /paymentmethod | N
 PUT | /cart/{Integer:cartid}/payment/{Integer:ppaymentid}/{Double:amount} | N
 DELETE | /cart/{Integer:cartid}/payment/{Integer:paymentid}/{Double:amount} | N
+POST | /delivery | S
 GET | /delivery/types | N
 PUT | /cart/{Integer:cartid}/delivery/{Integer:deliveryid} | N
 GET | /stores | N
+POST ? /store | S
 POST | /cart/checkout | N
 GET | /orders/{Integer:orderid} | N
 GET | /oredrs | S
@@ -622,6 +624,105 @@ $request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/payment/1/99.99')
 $request->setRequestMethod('DELETE');
 $request->setHeaders(array(
   'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+
+### Create store
+To create a new store
+##### POST:/store
+###### Request
+* Authorization: Last received valid token
+* body:
+```
+{
+    "description": String:Stroe name,
+    "address": {
+        "address": String:Address,
+        "number": Sring:number,
+        "complement": String:Complement,
+        "city": String: city,
+        "state": Char[2]: State
+    }
+}
+```
+
+###### Response
+* AUthorization: Generated token
+* HTTP Status 201 - CREATED - When success
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+[![curl]][curl-url]
+
+###### curl
+```curl
+curl --request POST \
+  --url http://localhost:8080/pulsemkt/store \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6MTAsIm1pbnV0ZSI6NDYsInNlY29uZCI6MzIsIm5hbm8iOjk4ODAwMDAwMH19fQ==' \
+  --header 'content-type: application/json' \
+  --data '{
+    "description": "Materus Cohama",
+    "address": {
+        "address": "Av Daniel de la Touche",
+        "number": "123",
+        "complement": "Ao lado da BlackSwain",
+        "city": "São Luis",
+        "state": "MA"
+    }
+}'
+```
+
+[![java]][java-url]
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/json");
+RequestBody body = RequestBody.create(mediaType, "{\n    \"description\": \"Materus Cohama\",\n    \"address\": {\n        \"address\": \"Av Daniel de la Touche\",\n        \"number\": \"123\",\n        \"complement\": \"Ao lado da BlackSwain\",\n        \"city\": \"São Luis\",\n        \"state\": \"MA\"\n    }\n}");
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/store")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6MTAsIm1pbnV0ZSI6NDYsInNlY29uZCI6MzIsIm5hbm8iOjk4ODAwMDAwMH19fQ==")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+[![php]][php-url]
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$body = new http\Message\Body;
+$body->append('{
+    "description": "Materus Cohama",
+    "address": {
+        "address": "Av Daniel de la Touche",
+        "number": "123",
+        "complement": "Ao lado da BlackSwain",
+        "city": "São Luis",
+        "state": "MA"
+    }
+}');
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/store');
+$request->setRequestMethod('POST');
+$request->setBody($body);
+
+$request->setHeaders(array(
+  'content-type' => 'application/json',
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6MTAsIm1pbnV0ZSI6NDYsInNlY29uZCI6MzIsIm5hbm8iOjk4ODAwMDAwMH19fQ=='
 ));
 
 $client->enqueue($request)->send();

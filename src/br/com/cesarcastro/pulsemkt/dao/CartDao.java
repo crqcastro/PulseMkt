@@ -13,6 +13,8 @@ import br.com.cesarcastro.pulsemkt.enums.Status;
 import br.com.cesarcastro.pulsemkt.exception.ServiceBusinessException;
 import br.com.cesarcastro.pulsemkt.model.Address;
 import br.com.cesarcastro.pulsemkt.model.Cart;
+import br.com.cesarcastro.pulsemkt.model.Delivery;
+import br.com.cesarcastro.pulsemkt.model.DeliveryType;
 import br.com.cesarcastro.pulsemkt.model.PaymentMethod;
 import br.com.cesarcastro.pulsemkt.model.Product;
 import br.com.cesarcastro.pulsemkt.model.User;
@@ -214,7 +216,39 @@ public class CartDao {
 
 				cart.getPaymentList().add(pm);
 			}
-
+			
+			String delivery = "select d.deliveryid, d.deliverydesc, d.deliverytype, g.description_detail, ifnull(la.address, ua.address) address, "
+					+ "ifnull(la.addresscompl,ua.addresscompl) addresscompl, ifnull(la.addressnumber, ua.addressnumber) addressnumber, "
+					+ "ifnull(la.city, ua.city) city, ifnull(la.state, ua.state) state, ifnull(la.addressid, ua.addressid) addressid " + 
+					"from delivery d " + 
+					"inner join carts c on c.deliveryid = d.deliveryid " + 
+					"inner join generic g on g.detailid = d.deliverytype and g.id = 1 " +
+					"inner join users u on u.userid = c.userid " +
+					"left join address la on la.addressid = d.addressid " + 
+					"left join address ua on ua.addressid = d.addressid " +
+					"where c.`cartId` = ?";
+			PreparedStatement ps = con.prepareStatement(delivery);
+			ps.setInt(1, cart.getId());
+			ResultSet rsDel = ps.executeQuery();
+			if(rsDel.next()) {
+				Delivery del = new Delivery();
+				del.setId(rsDel.getInt("deliveryid"));
+				del.setDescription(rsDel.getString("deliverydesc"));
+				del.setType(new DeliveryType(rsDel.getInt("deliverytype"), rsDel.getString("description_detail")));
+				Address addr = new Address();
+				addr.setAddressId(rsDel.getInt("addressid"));
+				addr.setAddress(rsDel.getString("address"));
+				addr.setComplement(rsDel.getString("addresscompl"));
+				addr.setNumber(rsDel.getString("addressnumber"));
+				addr.setCity(rsDel.getString("city"));
+				addr.setState(rsDel.getString("state"));
+				del.setAddress(addr);
+				cart.setDeliveryMethod(del);
+			}
+				
+			
+			rsDel.close();
+			ps.close();
 			rsItems.close();
 			itemsStmt.close();
 
@@ -327,7 +361,7 @@ public class CartDao {
 	public void alterDelivery(Integer cartId, Integer deliveryId)
 			throws ServiceBusinessException, SQLException, Exception {
 
-		if (isActive(getCartById(cartId)))
+		if (!isActive(getCartById(cartId)))
 			throw new ServiceBusinessException("Resource is inactive");
 		
 		con = SysConfig.getConnection();

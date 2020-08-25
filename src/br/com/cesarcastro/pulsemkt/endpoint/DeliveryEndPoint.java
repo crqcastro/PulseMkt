@@ -33,30 +33,7 @@ public class DeliveryEndPoint {
 
 	DeliveryService service = new DeliveryService();
 
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createDelivery(@Context HttpServletRequest req, Delivery delivery) {
-		ResponseBuilder response = Response.ok();
-		try {
-			if (AppUtils.getUserFromAuthToken(req.getHeader(HttpHeaders.AUTHORIZATION))
-					.getUserRole() != UserRole.ADMINISTRATOR) {
-				response = Response.status(Status.FORBIDDEN);
-			} else {
-				service.create(delivery);
-				response = Response.created(URI.create(req.getRequestURI() + delivery.getId()));
-			}
-		} catch (ServiceBusinessException e) {
-			response = Response.status(Integer.parseInt(e.getMessage())).entity(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			response = Response.serverError();
-		}
-		return response
-				.header(HttpHeaders.AUTHORIZATION,
-						Authorization.toToken(Authorization.fromToken(req.getHeader(HttpHeaders.AUTHORIZATION))))
-				.build();
-	}
+	
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

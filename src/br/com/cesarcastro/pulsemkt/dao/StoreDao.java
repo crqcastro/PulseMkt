@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
 
 import br.com.cesarcastro.pulsemkt.enums.Status;
@@ -61,6 +62,30 @@ public class StoreDao {
 			}
 			con.close();
 		
+	}
+	
+	public void create(Delivery delivery) throws ServiceBusinessException, SQLException, Exception {
+
+		con = SysConfig.getConnection();
+
+		String insSql = "insert into delivery (deliverytype, deliverydesc, addressid) " + "values (?, ?, ?)";
+
+		PreparedStatement stmt = con.prepareStatement(insSql, Statement.RETURN_GENERATED_KEYS);
+		stmt.setInt(1, delivery.getType().getId());
+		stmt.setString(2, delivery.getDescription());
+		stmt.setInt(3, delivery.getAddress().getAddressId());
+
+		stmt.executeUpdate();
+
+		ResultSet key = stmt.getGeneratedKeys();
+
+		if (key != null && key.next())
+			delivery.setId(key.getInt(1));
+
+		key.close();
+		stmt.close();
+		con.close();
+
 	}
 
 }

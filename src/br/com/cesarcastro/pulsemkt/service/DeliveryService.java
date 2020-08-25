@@ -20,22 +20,6 @@ public class DeliveryService {
 
 	DeliveryDao dao = new DeliveryDao();
 
-	public void create(Delivery delivery) throws ServiceBusinessException {
-		try {
-			dao.create(delivery);
-		} catch (SQLException e) {
-			if (SysConfig.DB_EXCEPTIONS_2_HTTP_STATUS_CODES.containsKey(e.getClass().getCanonicalName())) {
-				throw new ServiceBusinessException(
-						SysConfig.DB_EXCEPTIONS_2_HTTP_STATUS_CODES.get(e.getClass().getCanonicalName()).toString(), e);
-			} else {
-				throw new ServiceBusinessException(Response.Status.INTERNAL_SERVER_ERROR.toString(), e);
-			}
-		} catch (Exception e) {
-			throw new ServiceBusinessException(Response.Status.INTERNAL_SERVER_ERROR.toString(), e);
-
-		}
-	}
-
 	public void getDeliveryList(Collection<Delivery> deliveries, Integer type, String description, Integer offset,
 			Integer limit) throws ServiceBusinessException {
 		try {
