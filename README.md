@@ -56,7 +56,7 @@ curl --request POST \
 OkHttpClient client = new OkHttpClient();
 
 MediaType mediaType = MediaType.parse("application/json");
-RequestBody body = RequestBody.create(mediaType, "{\n    \"name\":\"User Name\",\n    \"email\":\"your@email.com\",\n    \"password\":\"3ea9edc38460cf3616c480e6ae6d8c3c901b5c93\",\n    \"number\":\"55555555555\",\n    \"address\":{\n        \"address\":\"Pennsylvania Avenue NW\",\n        \"number\":\"1600\",\n        \"complement\":\"\",\n        \"city\":\"Washington\",\n        \"state\":\"DC\"\n    }\n}");
+RequestBody body = RequestBody.create(mediaType, "{\"name\":\"User Name\", \"email\":\"your@email.com\", \"password\":\"3ea9edc38460cf3616c480e6ae6d8c3c901b5c93\",\"number\":\"55555555555\", \"address\":{ \"address\":\"Pennsylvania Avenue NW\",\"number\":\"1600\",\n        \"complement\":\"S/N\",\"city\":\"Washington\",\"state\":\"DC\"}}");
 Request request = new Request.Builder()
   .url("http://localhost:8080/pulsemkt/user/")
   .post(body)
@@ -93,6 +93,56 @@ $request->setBody($body);
 
 $request->setHeaders(array(
   'content-type' => 'application/json'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+### Login
+##### POST:/pulsemkt/user
+###### Request
+* Authorization: Basic Base64(your@email.com:password)
+	* EX-> Basic amFuaWZibEBnbWFpbC5jb206M2VhOWVkYzM4NDYwY2YzNjE2YzQ4MGU2YWU2ZDhjM2M5MDFiNWM5Mw==
+
+###### Response
+* Authorization: Generated token
+	* Every requeste will update this token
+	* Valid: 10 minutes
+* HTTP Status 200 - CREATED - When success
+
+###### CURL
+```curl
+curl --request POST \
+  --url http://localhost:8080/pulsemkt/login \
+  --header 'authorization: Basic eW91ckBlbWFpbC5jb206MTIzNDU2'
+```
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/login")
+  .post(null)
+  .addHeader("authorization", "Basic eW91ckBlbWFpbC5jb206MTIzNDU2")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/login');
+$request->setRequestMethod('POST');
+$request->setHeaders(array(
+  'authorization' => 'Basic eW91ckBlbWFpbC5jb206MTIzNDU2'
 ));
 
 $client->enqueue($request)->send();
