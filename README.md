@@ -6,9 +6,17 @@
 Example of webservice rest that implements a shopping cart
 
 ## Resources Table
-VERB | RESOURCE
------|---------
-POST | /User
+Verb | Resource | ADMIN
+-----|----------|-------
+POST | /user | [ ]
+POST | /login | [ ]
+POST | /cart | [ ]
+GET | /products | [ ]
+PUT | /cart/{Integer:cartid}/product/{Integer:productid}/{Double:quantity} | [ ]
+DELETE | /cart/{Integer:cartid}/product/{Integer:productid}/{Double:quantity} | [ ]
+
+
+
 
 ## Usage
 
@@ -114,7 +122,7 @@ echo $response->getBody();
 ```
 ### Login
 To authenticate a user
-##### POST:/user
+##### POST:/login
 ###### Request
 * Authorization: Basic Base64(your@email.com:password)
 	* EX-> Basic amFuaWZibEBnbWFpbC5jb206M2VhOWVkYzM4NDYwY2YzNjE2YzQ4MGU2YWU2ZDhjM2M5MDFiNWM5Mw==
