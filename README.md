@@ -8,7 +8,7 @@ Example of webservice rest that implements a shopping cart
 ## Resources Table
 Verb | Resource | ADMIN
 -----|----------|-------
-POST | /user | [ ]
+POST | /user | -[ ]
 POST | /login | [ ]
 POST | /cart | [ ]
 GET | /products | [ ]
