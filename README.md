@@ -11,7 +11,7 @@ Example of webservice rest that implements a shopping cart
 ##### POST:/user
 ###### Request
 * Content-Type: application/json
-* Body
+* Body: Json 
 ```
 {
     "name":"String name",
@@ -201,7 +201,134 @@ $response = $client->getResponse();
 echo $response->getBody();
 ```
 
+### Product List
+##### GET:/products
+* Query Parameters
+	* Offset: Used in pagination to limit the start of the query scope
+	* Limit: Used in pagination to limit the amount of results. Maximum 30 products per search
+	* Barcode: Used to search for a product by barcode
+	* Description: Used to search for a product that contains the value informed in the description
 
+###### Request
+* Authorization: Last received valid token
+
+
+###### Response
+* AUthorization: Generated token
+* Location: cart resource location
+* HTTP Status 200 - OK - When success
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+* Body: Json
+```
+[
+    {
+        "id": Integer product id,
+        "codBar": String Barcode,
+        "description": String description,
+        "value": Double product value,
+        "image": URL to image resource
+    }
+]
+```
+
+###### CURL
+```curl
+curl --request GET \
+  --url 'http://localhost:8080/pulsemkt/products/?offset=0&limit=20&barcode=7893321654&description=coke' \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ=='
+```
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/products/?offset=0&limit=20&barcode=7893321654&description=coke")
+  .get()
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ==")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/products/');
+$request->setRequestMethod('GET');
+$request->setQuery(new http\QueryString(array(
+  'offset' => '0',
+  'limit' => '20',
+  'barcode' => '7893321654',
+  'description' => 'coke'
+)));
+
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ=='
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+### Add product to cart
+##### PUT:/cart/{cartid}/product/{productid}
+* Cartid: Id returned at cart creation
+* Productid: Id de um produto válido. A lista de produtos pode ser obtida em *Listar Produtos*
+
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* HTTP Status 201 - ACCEPTED - When success
+* HTTP Status 409 - CONFLICT - When the requisition user is not the same user who created the cart
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+###### CURL
+```curl
+curl --request PUT \
+  --url http://localhost:8080/pulsemkt/cart/1/product/1 \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+```
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/cart/1/product/1")
+  .put(null)
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/1/product/1');
+$request->setRequestMethod('PUT');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNX0sInRpbWUiOnsiaG91ciI6NywibWludXRlIjoxNCwic2Vjb25kIjo4LCJuYW5vIjo5NTAwMDAwMH19fQ'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
 
 
 
