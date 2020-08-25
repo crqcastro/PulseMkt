@@ -5,13 +5,109 @@
 ## Overview
 Example of webservice rest that implements a shopping cart
 
-## Instalation
+## Usage
+
+### Logon
+##### POST:/pulsemkt/user
+###### Request
+* Content-Type: application/json
+* Body
+```
+{
+    "name":"String name",
+    "email":"String email",
+    "password":"String SHA-1 Encoded password",
+    "number":"String CPF",
+    "address":{
+        "address":"String Address information",
+        "number":"String s/n",
+        "complement":"String Complement",
+        "city":"String city",
+        "state":"String state"
+    }
+}
+```
+
+###### Response
+* HTTP Status 201 - CREATED - When success
+* HTTP Status 400 - BAD REQUEST - When data for a mandatory field is missing
+
+###### CURL
+```shell
+curl --request POST \
+  --url http://localhost:8080/pulsemkt/user/ \
+  --header 'content-type: application/json' \
+  --data '{
+    "name":"User Name",
+    "email":"your@email.com",
+    "password":"3ea9edc38460cf3616c480e6ae6d8c3c901b5c93",
+    "number":"55555555555",
+    "address":{
+        "address":"Pennsylvania Avenue NW",
+        "number":"1600",
+        "complement":"",
+        "city":"Washington",
+        "state":"DC"
+    }
+}'
+```
+###### Java
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/json");
+RequestBody body = RequestBody.create(mediaType, "{\n    \"name\":\"User Name\",\n    \"email\":\"your@email.com\",\n    \"password\":\"3ea9edc38460cf3616c480e6ae6d8c3c901b5c93\",\n    \"number\":\"55555555555\",\n    \"address\":{\n        \"address\":\"Pennsylvania Avenue NW\",\n        \"number\":\"1600\",\n        \"complement\":\"\",\n        \"city\":\"Washington\",\n        \"state\":\"DC\"\n    }\n}");
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/user/")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$body = new http\Message\Body;
+$body->append('{
+    "name":"User Name",
+    "email":"your@email.com",
+    "password":"3ea9edc38460cf3616c480e6ae6d8c3c901b5c93",
+    "number":"55555555555",
+    "address":{
+        "address":"Pennsylvania Avenue NW",
+        "number":"1600",
+        "complement":"",
+        "city":"Washington",
+        "state":"DC"
+    }
+}');
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/user/');
+$request->setRequestMethod('POST');
+$request->setBody($body);
+
+$request->setHeaders(array(
+  'content-type' => 'application/json'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+## Instalation Guide
 
 [![github]][github-url] 
 ### Git
 Fork the project to your own repository
 
-[!* Fork it `https://github.com/crqcastro/PulseMkt/fork`][git-fork-help]
+* [Fork it `https://github.com/crqcastro/PulseMkt/fork`] [git-fork-help]
 
 [![maven]][maven-url] 
 ### Maven
@@ -47,12 +143,11 @@ Just deploy the file to the application server.
 [![mysql]][mysql-url]
 ### Database Configuration
 Follow the steps to make the necessary settings
-```
-database-script/pulsemkt.sql
-```
+
 #### Step 1
 Run the database application script 
 ```
+database-script/pulsemkt.sql
 
 ```
 #### Step 2
@@ -66,11 +161,6 @@ insert database connection string information, including host and port
 ```
 db.url=jdbc:mysql://localhost:3306/pulsemkt?autoReconnect=true&useSSL=false&useTimezone=true&serverTimezone=UTC
 ```
-
-
-## Usage
-
-
 
 
 
