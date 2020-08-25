@@ -4,7 +4,12 @@
 [![version]][home]
 ## Overview
 Example of webservice rest that implements a shopping cart
-[create an anchor](#anchors-in-markdown)
+
+## Resources Table
+VERB | RESOURCE
+-----|---------
+POST | /User
+
 ## Usage
 
 ### Logon
@@ -525,7 +530,7 @@ Response response = client.newCall(request).execute();
 ```
 
 [![php]][php-url]
-#anchors-in-markdown
+
 ###### PHP
 ```php
 <?php
