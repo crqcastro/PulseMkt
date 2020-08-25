@@ -1203,6 +1203,19 @@ insert database connection string information, including host and port
 db.url=jdbc:mysql://localhost:3306/pulsemkt?autoReconnect=true&useSSL=false&useTimezone=true&serverTimezone=UTC
 ```
 
+## Contributing :
+
+* Fork it `https://github.com/crqcastro/pulsemkt/fork`
+* Create your feature branch `git checkout -b my-new-feature`
+* Commit your changes `git commit -am 'Add some feature'`
+* Push to the branch `git push origin my-new-feature`
+* Create a new Pull Request
+
+<hr/>
+
+### Have fun! :grin:
+
+
 
 
 [build-status-image]:https://raw.githubusercontent.com/crqcastro/svg/master/buildpassing.svg
