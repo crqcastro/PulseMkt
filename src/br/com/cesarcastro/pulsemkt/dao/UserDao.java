@@ -138,7 +138,7 @@ public class UserDao {
 	public boolean efetuaLogin(User user) throws SQLException, Exception {
 		con = SysConfig.getConnection();
 		boolean retorno = false;
-		String sql = "select userid, username, useremail, userrole from users where userStatus = ? and  useremail = ? and userpwd = sha1(?)";
+		String sql = "select userid, username, useremail, userrole from users where userStatus = ? and  useremail = ? and userpwd = ?";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setString(1, Status.ACTIVE.getValue());
 		stmt.setString(2, user.getEmail());

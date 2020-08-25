@@ -35,12 +35,12 @@ public class CartEndPoint {
 	CartService service = new CartService();
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createCart(User user, @Context HttpServletRequest req) {
+	public Response createCart(@Context HttpServletRequest req) {
 
 		ResponseBuilder response = Response.ok();
 
 		try {
+			User user = Authorization.fromToken(req.getHeader(HttpHeaders.AUTHORIZATION)).getUser();
 			Cart cart = new Cart(null, user, new ArrayList<Product>());
 			service.create(cart);
 			response = Response.created(URI.create(req.getRequestURI() + cart.getId()));

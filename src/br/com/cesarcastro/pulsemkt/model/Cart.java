@@ -92,6 +92,10 @@ public class Cart {
 		int userId = this.user.getId();
 		return userId;
 	}
+	
+	public User getUser() {
+		return this.user;
+	}
 
 	public Collection<PaymentMethod> getPaymentList() {
 		return payments;

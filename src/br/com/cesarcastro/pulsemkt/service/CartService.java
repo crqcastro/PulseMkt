@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import javax.ws.rs.core.Response;
 
 import br.com.cesarcastro.pulsemkt.dao.CartDao;
+import br.com.cesarcastro.pulsemkt.dao.UserDao;
 import br.com.cesarcastro.pulsemkt.enums.Status;
 import br.com.cesarcastro.pulsemkt.exception.ServiceBusinessException;
 import br.com.cesarcastro.pulsemkt.model.Cart;
@@ -17,6 +18,8 @@ public class CartService {
 
 	public void create(Cart cart) throws ServiceBusinessException {
 		try {
+			if (!new UserDao().efetuaLogin(cart.getUser()))
+				throw new ServiceBusinessException(Response.Status.CONFLICT.toString());
 
 			dao.create(cart);
 
@@ -170,7 +173,7 @@ public class CartService {
 		try {
 			Cart newCart = dao.getCartById(cart.getId());
 			newCart.update();
-			if(!newCart.isClosable())
+			if (!newCart.isClosable())
 				throw new ServiceBusinessException(javax.ws.rs.core.Response.Status.CONFLICT.toString());
 			newCart.setStatus(Status.PENDING_DELIVERY);
 			dao.finalize(newCart);

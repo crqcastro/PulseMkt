@@ -8,7 +8,7 @@ Example of webservice rest that implements a shopping cart
 ## Usage
 
 ### Logon
-##### POST:/pulsemkt/user
+##### POST:/user
 ###### Request
 * Content-Type: application/json
 * Body
@@ -101,7 +101,7 @@ $response = $client->getResponse();
 echo $response->getBody();
 ```
 ### Login
-##### POST:/pulsemkt/user
+##### POST:/user
 ###### Request
 * Authorization: Basic Base64(your@email.com:password)
 	* EX-> Basic amFuaWZibEBnbWFpbC5jb206M2VhOWVkYzM4NDYwY2YzNjE2YzQ4MGU2YWU2ZDhjM2M5MDFiNWM5Mw==
@@ -110,7 +110,7 @@ echo $response->getBody();
 * Authorization: Generated token
 	* Every requeste will update this token
 	* Valid: 10 minutes
-* HTTP Status 200 - CREATED - When success
+* HTTP Status 200 - OK - When success
 
 ###### CURL
 ```curl
@@ -151,13 +151,82 @@ $response = $client->getResponse();
 echo $response->getBody();
 ```
 
+### Create Cart
+##### POST:/cart
+###### Request
+* Authorization: Last received valid token
+
+###### Response
+* AUthorization: Generated token
+* Location: cart resource location
+* HTTP Status 201 - CREATED - When success
+* HTTP Status 401 - UNAUTHORIZED - When token expires
+
+###### CURL
+```curl
+curl --request POST \
+  --url http://localhost:8080/pulsemkt/cart/ \
+  --header 'authorization: eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNH0sInRpbWUiOnsiaG91ciI6MjIsIm1pbnV0ZSI6OSwic2Vjb25kIjo0LCJuYW5vIjo5NjAwMDAwMDB9fX0='
+```
+
+###### JAVA
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://localhost:8080/pulsemkt/cart/")
+  .post(null)
+  .addHeader("authorization", "eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNH0sInRpbWUiOnsiaG91ciI6MjIsIm1pbnV0ZSI6OSwic2Vjb25kIjo0LCJuYW5vIjo5NjAwMDAwMDB9fX0=")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+###### PHP
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('http://localhost:8080/pulsemkt/cart/');
+$request->setRequestMethod('POST');
+$request->setHeaders(array(
+  'authorization' => 'eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHB1bHNlbWt0LmNvbSIsInBhc3N3b3JkIjoiNGU3YWZlYmNmYmFlMDAwYjIyYzdjODVlNTU2MGY4OWEyYTAyODBiNCIsInJvbGUiOiJBRE1JTklTVFJBVE9SIn0sImV4cGlyYXRpb24iOnsiZGF0ZSI6eyJ5ZWFyIjoyMDIwLCJtb250aCI6OCwiZGF5IjoyNH0sInRpbWUiOnsiaG91ciI6MjIsIm1pbnV0ZSI6OSwic2Vjb25kIjo0LCJuYW5vIjo5NjAwMDAwMDB9fX0='
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Instalation Guide
 
 [![github]][github-url] 
 ### Git
 Fork the project to your own repository
 
-* [Fork it `https://github.com/crqcastro/PulseMkt/fork`] [git-fork-help]
+* Fork it `https://github.com/crqcastro/PulseMkt/fork`
 
 [![maven]][maven-url] 
 ### Maven
