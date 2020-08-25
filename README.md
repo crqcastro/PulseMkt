@@ -22,7 +22,7 @@ POST | /delivery | S
 GET | /delivery/types | N
 PUT | /cart/{Integer:cartid}/delivery/{Integer:deliveryid} | N
 GET | /stores | N
-POST ? /store | S
+POST | /store | S
 POST | /cart/checkout | N
 GET | /orders/{Integer:orderid} | N
 GET | /oredrs | S
